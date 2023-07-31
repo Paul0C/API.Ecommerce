@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
-namespace Ecommerce.Domain.Identity
+namespace Ecommerce.Application.Dtos
 {
-    public class User : IdentityUser<int>
+    public class UserDto
     {
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string PassWord { get; set; }
         public string PrimeiroNome { get; set; }
         public string UltimoNome { get; set; }
         public string Estado { get; set; }
         public string Cidade { get; set; }
-        public DateTime DataCadastro { get; set; }
-        public List<UserRole> UserRoles { get; set; }
     }
 }

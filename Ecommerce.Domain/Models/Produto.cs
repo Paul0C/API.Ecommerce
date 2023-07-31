@@ -15,5 +15,6 @@ namespace Ecommerce.Domain.Models
         public Categoria Categoria { get; set; }
         public int MarcaId { get; set; }
         public Marca Marca { get; set; }
+        public List<CarrinhoItem> Itens { get; set; }
     }
 }

@@ -11,6 +11,6 @@ namespace Ecommerce.Domain.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
-        public List<CarrinhoItem> Items { get; set; }
+        public List<CarrinhoItem> Itens { get; set; }
     }
 }
