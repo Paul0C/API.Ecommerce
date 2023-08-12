@@ -30,11 +30,11 @@ namespace Ecommerce.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<SignInResult> CheckUserPassWordAsync(UserDto userDto, string passWord)
+        public async Task<SignInResult> CheckUserPassWordAsync(UserUpdateDto userUpdateDto, string passWord)
         {
             try
             {
-                var user = _userManager.Users.SingleOrDefault(u => u.UserName == userDto.UserName.ToLower());
+                var user = _userManager.Users.SingleOrDefault(u => u.UserName == userUpdateDto.UserName.ToLower());
 
                 return await _signInManager.CheckPasswordSignInAsync(user, passWord, false);
             }
@@ -44,18 +44,20 @@ namespace Ecommerce.Application.Services
             }
         }
 
-        public async Task<UserDto> CreateAccountAsync(UserDto userDto)
+        public async Task<UserUpdateDto> CreateAccountAsync(UserDto userDto)
         {
             try
             {
-               var user = _mapper.Map<User>(userDto);
-               var result = await _userManager.CreateAsync(user, userDto.PassWord);
-               
+                var user = _mapper.Map<User>(userDto);
+                user.DataCadastro = DateTime.Now;
 
-               if(result.Succeeded){
-                var userRetorno = _mapper.Map<UserDto>(user);
-                return userRetorno;
-               }
+                var result = await _userManager.CreateAsync(user, userDto.PassWord);
+                
+
+                if(result.Succeeded){
+                    var userRetorno = _mapper.Map<UserUpdateDto>(user);
+                    return userRetorno;
+                }
 
                 return null;
             }
@@ -66,15 +68,15 @@ namespace Ecommerce.Application.Services
             }
         }
 
-        public async Task<UserDto> GetUserByUserName(string userName)
+        public async Task<UserUpdateDto> GetUserByUserNameAsync(string userName)
         {
             try
             {
-                var user = await _userPersist.GetUserByUserName(userName);
+                var user = await _userPersist.GetUserByUserNameAsync(userName);
                 if(user == null) return null;
 
-                var userRetorno = _mapper.Map<UserDto>(user);
-
+                var userRetorno = _mapper.Map<UserUpdateDto>(user);
+                userRetorno.DataCadastro = user.DataCadastro.ToString();
                 return userRetorno;
             }
             catch (Exception e)
@@ -84,25 +86,30 @@ namespace Ecommerce.Application.Services
             }
         }
 
-        public async Task<UserDto> UpdateAccountAsync(UserDto userDto)
+        public async Task<UserUpdateDto> UpdateAccountAsync(UserUpdateDto userUpdateDto)
         {
             try
             {
-                var userBanco = await _userPersist.GetUserByUserName(userDto.UserName);
+                var userBanco = await _userPersist.GetUserByUserNameAsync(userUpdateDto.UserName);
                 if(userBanco == null) return null;
 
-                var user = _mapper.Map<User>(userDto);
+                _mapper.Map(userUpdateDto, userBanco);
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, token, userDto.PassWord);
+                var token = await _userManager.GeneratePasswordResetTokenAsync(userBanco);
+                var result = await _userManager.ResetPasswordAsync(userBanco, token, userUpdateDto.PassWord);
 
-                _userPersist.Update<User>(user);
+                _userPersist.Update<User>(userBanco);
 
-                var userAtualizado = await _userPersist.GetUserById(user.Id);
+                if(await _userPersist.SaveChangesAsync())
+                {
+                    var userAtualizado = await _userPersist.GetUserByIdAsync(userBanco.Id);
+                    var userParaRetorno = _mapper.Map<UserUpdateDto>(userAtualizado);
 
-                var userParaRetorno = _mapper.Map<UserDto>(userAtualizado);
+                    return userParaRetorno;
+                }
 
-                return userParaRetorno;
+                
+                return null;
 
             }
             catch (Exception e)

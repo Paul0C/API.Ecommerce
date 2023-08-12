@@ -8,6 +8,6 @@ namespace Ecommerce.Application.Services.Interfaces
 {
     public interface ITokenService
     {
-        Task<string> CreateToken(UserDto userDto);
+        Task<string> CreateToken(UserUpdateDto userUpdateDto);
     }
 }

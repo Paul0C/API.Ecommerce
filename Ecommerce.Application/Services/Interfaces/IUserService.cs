@@ -11,9 +11,9 @@ namespace Ecommerce.Application.Services.Interfaces
     public interface IUserService
     {
         Task<bool> UserExists(string userName);
-        Task<UserDto> GetUserByUserName(string userName);
-        Task<SignInResult> CheckUserPassWordAsync(UserDto user, string passWord);
-        Task<UserDto> CreateAccountAsync(UserDto user);
-        Task<UserDto> UpdateAccountAsync(UserDto user);
+        Task<UserUpdateDto> GetUserByUserNameAsync(string userName);
+        Task<SignInResult> CheckUserPassWordAsync(UserUpdateDto user, string passWord);
+        Task<UserUpdateDto> CreateAccountAsync(UserDto user);
+        Task<UserUpdateDto> UpdateAccountAsync(UserUpdateDto user);
     }
 }

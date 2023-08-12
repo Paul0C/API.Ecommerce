@@ -32,32 +32,41 @@ namespace Ecommerce.Application.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
         }
 
-        public async Task<string> CreateToken(UserDto userDto)
+        public async Task<string> CreateToken(UserUpdateDto userUpdateDto)
         {
-            var user = _mapper.Map<User>(userDto);
+            try
+            {
+                var user = _mapper.Map<User>(userUpdateDto);
 
-            var claims = new List<Claim>{
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.UserName)
-            };
+                var claims = new List<Claim>{
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimValueTypes.DateTime, user.DataCadastro.ToString())
+                };
 
-            var roles = await _userManager.GetRolesAsync(user);
+                var roles = await _userManager.GetRolesAsync(user);
 
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+                claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+                var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
 
-            var tokenDescription = new SecurityTokenDescriptor{
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
-            };
+                var tokenDescription = new SecurityTokenDescriptor{
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.Now.AddDays(1),
+                    SigningCredentials = creds
+                };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenHandler = new JwtSecurityTokenHandler();
 
-            var token = tokenHandler.CreateToken(tokenDescription);
+                var token = tokenHandler.CreateToken(tokenDescription);
 
-            return tokenHandler.WriteToken(token);
+                return tokenHandler.WriteToken(token);
+            }
+            catch (Exception e)
+            {
+                
+                throw new Exception($"Não foi possível criar o token do Usuário. Erro: {e.Message}");
+            }
         }
     }
 }

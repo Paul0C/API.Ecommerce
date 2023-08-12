@@ -17,17 +17,18 @@ namespace Ecommerce.Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<User> GetUserById(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
             return await _dataContext.Users.FindAsync(id);
         }
 
-        public async Task<User> GetUserByUserName(string userName)
+        public async Task<User> GetUserByUserNameAsync(string userName)
         {
-            return await _dataContext.Users.FindAsync(userName);
+            var userNameParametro = userName.ToLower();
+            return await _dataContext.Users.FirstAsync(user => user.UserName == userNameParametro);
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
             return await _dataContext.Users.ToListAsync();
         }
