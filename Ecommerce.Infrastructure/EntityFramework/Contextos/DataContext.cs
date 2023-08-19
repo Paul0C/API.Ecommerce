@@ -47,11 +47,31 @@ namespace Ecommerce.Infrastructure.EntityFramework.Contextos
             modelBuilder.Entity<Produto>()
                         .HasOne(c => c.Categoria)
                         .WithMany(p => p.Produtos)
-                        .IsRequired();
+                        .IsRequired();            
 
             modelBuilder.Entity<Produto>()
                         .HasOne(c => c.Marca)
                         .WithMany(p => p.Produtos)
+                        .IsRequired();
+
+            modelBuilder.Entity<Produto>()
+                        .Property(p => p.Nome)
+                        .HasMaxLength(30)
+                        .IsRequired();
+
+             modelBuilder.Entity<Produto>()
+                        .Property(p => p.Descricao)
+                        .HasMaxLength(60)
+                        .IsRequired();
+            
+            modelBuilder.Entity<Marca>()
+                        .Property(p => p.Nome)
+                        .HasMaxLength(20)
+                        .IsRequired();
+            
+            modelBuilder.Entity<Categoria>()
+                        .Property(p => p.Nome)
+                        .HasMaxLength(15)
                         .IsRequired();
             
             modelBuilder.Entity<Carrinho>()
