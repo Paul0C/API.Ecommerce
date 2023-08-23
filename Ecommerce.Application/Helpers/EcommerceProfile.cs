@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Ecommerce.Application.Dtos;
 using Ecommerce.Domain.Identity;
+using Ecommerce.Domain.Models;
 
 namespace Ecommerce.Application.Helpers
 {
@@ -15,6 +16,9 @@ namespace Ecommerce.Application.Helpers
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<User, UserLoginDto>().ReverseMap();
             CreateMap<User, UserUpdateDto>().ReverseMap();
+
+            CreateMap<Categoria, CategoriaDto>().ReverseMap();
+            CreateMap<Marca, MarcaDto>().ReverseMap();
         }
     }
 }
