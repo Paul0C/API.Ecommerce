@@ -97,11 +97,14 @@ builder.Services.AddScoped<IGeralPersist, GeralPersist>();
 builder.Services.AddScoped<IUserPersist, UserPersist>();
 builder.Services.AddScoped<ICategoriaPersist, CategoriaPersist>();
 builder.Services.AddScoped<IMarcaPersist, MarcaPersist>();
+builder.Services.AddScoped<IProdutoPersist, ProdutoPersist>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IMarcaService, MarcaService>();
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
+
 
 builder.Services.AddCors();
 

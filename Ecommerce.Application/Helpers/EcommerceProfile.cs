@@ -19,6 +19,8 @@ namespace Ecommerce.Application.Helpers
 
             CreateMap<Categoria, CategoriaDto>().ReverseMap();
             CreateMap<Marca, MarcaDto>().ReverseMap();
+            CreateMap<Produto, ProdutoDto>().ReverseMap();
+            CreateMap<Produto, ProdutoUpdateDto>().ReverseMap();
         }
     }
 }
