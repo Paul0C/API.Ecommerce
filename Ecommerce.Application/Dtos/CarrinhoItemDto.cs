@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ecommerce.Domain.Models
+namespace Ecommerce.Application.Dtos
 {
-    public class CarrinhoItem
+    public class CarrinhoItemDto
     {
         public int Id { get; set; }
-        public int CarrinhoId { get; set; }
         public int ProdutoId { get; set; }
+        public int CarrinhoId { get; set; }
         public int Quantidade { get; set; }
-        public Carrinho Carrinho { get; set; }
-        public Produto Produto { get; set; }
+        public decimal Preco { get; set; }
+        public int PrecoTotal { get; set; }
     }
 }

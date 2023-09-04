@@ -104,7 +104,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IMarcaService, MarcaService>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
-
+builder.Services.AddScoped<ICarrinhoService, CarrinhoService>();
 
 builder.Services.AddCors();
 
